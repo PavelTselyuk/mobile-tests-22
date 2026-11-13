@@ -14,6 +14,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
+
     @BeforeAll
     static void beforeAll() {
         Configuration.browser = BrowserstackDriver.class.getName();
@@ -35,7 +36,6 @@ public class TestBase {
 //        Attach.screenshotAs("Last screenshot"); // todo fix
         Attach.pageSource();
         closeWebDriver();
-
         Attach.addVideo(sessionId);
     }
 }
