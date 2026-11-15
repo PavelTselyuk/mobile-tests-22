@@ -2,15 +2,19 @@ package drivers;
 
 import com.codeborne.selenide.WebDriverProvider;
 import config.BrowserstackConfig;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import org.aeonbits.owner.ConfigFactory;
 import org.jspecify.annotations.NonNull;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import static io.appium.java_client.remote.MobilePlatform.ANDROID;
 
 public class BrowserstackDriver implements WebDriverProvider {
 
@@ -18,19 +22,22 @@ public class BrowserstackDriver implements WebDriverProvider {
 
     @Override
     public WebDriver createDriver(@NonNull Capabilities capabilities) {
-        MutableCapabilities caps = new MutableCapabilities(); // todo move to UiAutomator2Options
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setPlatformName(ANDROID);
+        options.setDeviceName(config.getDevice());
+        options.setPlatformVersion(config.getOsVersion());
+        options.setApp(config.getApp());
 
-        caps.setCapability("browserstack.user", config.getUser());
-        caps.setCapability("browserstack.key", config.getKey());
-        caps.setCapability("app", config.getApp());
-        caps.setCapability("device", config.getDevice());
-        caps.setCapability("os_version", config.getOsVersion());
-        caps.setCapability("project", config.getProject());
-        caps.setCapability("build", config.getBuild());
-        caps.setCapability("name", config.getName());
+        Map<String, Object> bstackOptions = new HashMap<>();
+        bstackOptions.put("userName", config.getUser());
+        bstackOptions.put("accessKey", config.getKey());
+        bstackOptions.put("projectName", config.getProject());
+        bstackOptions.put("buildName", config.getBuild());
+        bstackOptions.put("sessionName", config.getName());
+        options.setCapability("bstack:options", bstackOptions);
 
         try {
-            return new RemoteWebDriver(new URL(config.getHubUrl()), caps);
+            return new AndroidDriver(new URL(config.getHubUrl()), options);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

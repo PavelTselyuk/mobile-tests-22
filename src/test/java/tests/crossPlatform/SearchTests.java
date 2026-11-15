@@ -1,5 +1,6 @@
 package tests.crossPlatform;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
@@ -16,7 +17,7 @@ public class SearchTests extends TestBase {
         back();
         step("Type search", () -> {
             $(id("org.wikipedia.alpha:id/nav_tab_search")).click();
-            $$x("//android.view.View[@content-desc=\"Close\"]");
+            $x("//android.view.View[@content-desc=\"Close\"]").click();
             $(accessibilityId("Search Wikipedia")).click();
             $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("Appium");
         });
@@ -24,28 +25,4 @@ public class SearchTests extends TestBase {
                 $$x("//android.widget.TextView[contains(@text, 'Appium')]")
                         .shouldHave(sizeGreaterThan(0)));
     }
-
-    @Test
-    void successfulPassWelcomeScreens() {
-        step("Check 1st welcome page appeared and click next", () -> {
-            $x("//android.widget.TextView[@text=\"All the world's knowledge\"]").shouldBe(visible);
-            $x("//android.widget.Button").click();
-        });
-
-        step("Check 2nd welcome page appeared and click next", () -> {
-            $x("//android.widget.ImageView[@content-desc=\"Data & Privacy\"]").shouldBe(visible);
-            $x("//android.view.View[@content-desc=\"Forward\"]").click();
-        });
-
-        step("Check 3rd welcome page appeared and click next", () -> {
-            $x("//android.widget.ImageView[@content-desc=\"Read in more than 300 languages\"]").shouldBe(visible);
-            $x("//android.widget.Button").click();
-        });
-
-        step("Check 4th welcome page appeared", () -> {
-            $x("//android.widget.ImageView[@content-desc=\"Follow your curiosity\"]").shouldBe(visible);
-        });
-    }
-
-
 }

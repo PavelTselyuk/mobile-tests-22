@@ -28,11 +28,13 @@ public class RealDriver implements WebDriverProvider {
     public WebDriver createDriver(@NonNull Capabilities capabilities) {
         UiAutomator2Options options = new UiAutomator2Options();
 
+        options.setCapability("appium:uiautomator2ServerLaunchTimeout", 60000);
+        options.setCapability("appium:uiautomator2ServerInstallTimeout", 100000);
+        options.setRemoteAdbHost("127.0.0.1");
+
         options.setAutomationName(ANDROID_UIAUTOMATOR2)
                 .setPlatformName(ANDROID)
-                // TODO: указать версию ОС реального устройства в real.properties (platformVersion)
                 .setPlatformVersion(config.platformVersion())
-                // TODO: указать имя / udid реального устройства в real.properties (deviceName)
                 .setDeviceName(config.deviceName())
                 .setApp(getAppPath())
                 .setAppPackage(config.appPackage())
