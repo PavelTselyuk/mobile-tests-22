@@ -1,4 +1,4 @@
-package tests.local;
+package tests.crossPlatform;
 
 import org.junit.jupiter.api.Test;
 
