@@ -32,6 +32,7 @@ dependencies {
     testImplementation(
             "org.aspectj:aspectjweaver:$aspectjWeaverVersion",
             "com.codeborne:selenide:$selenideVersion",
+            "com.codeborne:selenide-appium:7.19.1",
             "io.qameta.allure:allure-selenide:$allureVersion",
             "io.appium:java-client:8.3.0",
             "commons-io:commons-io:2.11.0",
@@ -41,6 +42,7 @@ dependencies {
             "org.aeonbits.owner:owner:1.0.4"
     )
 }
+
 
 tasks.withType(Test) {
     useJUnitPlatform()

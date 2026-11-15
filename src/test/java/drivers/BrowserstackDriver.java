@@ -3,12 +3,12 @@ package drivers;
 import com.codeborne.selenide.WebDriverProvider;
 import config.BrowserstackConfig;
 import org.aeonbits.owner.ConfigFactory;
+import org.jspecify.annotations.NonNull;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import javax.annotation.Nonnull;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -16,9 +16,8 @@ public class BrowserstackDriver implements WebDriverProvider {
 
     private final BrowserstackConfig config = ConfigFactory.create(BrowserstackConfig.class, System.getProperties());
 
-    @Nonnull
     @Override
-    public WebDriver createDriver(@Nonnull Capabilities capabilities) {
+    public WebDriver createDriver(@NonNull Capabilities capabilities) {
         MutableCapabilities caps = new MutableCapabilities(); // todo move to UiAutomator2Options
 
         // Set your access credentials
@@ -26,7 +25,10 @@ public class BrowserstackDriver implements WebDriverProvider {
         caps.setCapability("browserstack.key", config.getKey());
 
         // Set URL of the application under test
-        caps.setCapability("app", "bs://bb4ab39663b0ff10c4c5d9bc609bc3742c56f4b3");
+        caps.setCapability("app", "bs://deffbcd7188c51b72a9f03c71bff2eae22627cfc");
+
+//        !!!старость!!!
+//        caps.setCapability("app", "bs://bb4ab39663b0ff10c4c5d9bc609bc3742c56f4b3");
 
         // Specify device and os_version for testing
         caps.setCapability("device", "Google Pixel 6");

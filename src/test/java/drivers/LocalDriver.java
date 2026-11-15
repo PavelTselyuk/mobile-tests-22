@@ -8,7 +8,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,15 +21,15 @@ import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 
 public class LocalDriver implements WebDriverProvider {
 
-    @Nonnull
+    @NonNull
     @Override
-    public WebDriver createDriver(@Nonnull Capabilities capabilities) {
+    public WebDriver createDriver(@NonNull Capabilities capabilities) {
         UiAutomator2Options options = new UiAutomator2Options();
 
         options.setAutomationName(ANDROID_UIAUTOMATOR2)
                 .setPlatformName(ANDROID)
-                .setPlatformVersion("14.0")
-                .setDeviceName("Pixel_3a_API_34_extension_level_7_arm64")
+                .setPlatformVersion("11.0")
+                .setDeviceName("Pixel 4")
                 .setApp(getAppPath())
                 .setAppPackage("org.wikipedia.alpha")
                 .setAppActivity("org.wikipedia.main.MainActivity");
@@ -39,7 +39,7 @@ public class LocalDriver implements WebDriverProvider {
 
     public static URL getAppiumServerUrl() {
         try {
-            return new URL("http://localhost:4723/wd/hub");
+            return new URL("http://localhost:4723/");
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
