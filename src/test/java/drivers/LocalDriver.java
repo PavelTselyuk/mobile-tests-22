@@ -1,14 +1,14 @@
 package drivers;
 
 import com.codeborne.selenide.WebDriverProvider;
+import config.EmulationConfig;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
+import org.aeonbits.owner.ConfigFactory;
 import org.jspecify.annotations.NonNull;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +21,8 @@ import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 
 public class LocalDriver implements WebDriverProvider {
 
+    private final EmulationConfig config = ConfigFactory.create(EmulationConfig.class, System.getProperties());
+
     @NonNull
     @Override
     public WebDriver createDriver(@NonNull Capabilities capabilities) {
@@ -28,18 +30,18 @@ public class LocalDriver implements WebDriverProvider {
 
         options.setAutomationName(ANDROID_UIAUTOMATOR2)
                 .setPlatformName(ANDROID)
-                .setPlatformVersion("11.0")
-                .setDeviceName("Pixel 4")
+                .setPlatformVersion(config.platformVersion())
+                .setDeviceName(config.deviceName())
                 .setApp(getAppPath())
-                .setAppPackage("org.wikipedia.alpha")
-                .setAppActivity("org.wikipedia.main.MainActivity");
+                .setAppPackage(config.appPackage())
+                .setAppActivity(config.appActivity());
 
         return new AndroidDriver(getAppiumServerUrl(), options);
     }
 
-    public static URL getAppiumServerUrl() {
+    public URL getAppiumServerUrl() {
         try {
-            return new URL("http://localhost:4723/");
+            return new URL(config.appiumServerUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

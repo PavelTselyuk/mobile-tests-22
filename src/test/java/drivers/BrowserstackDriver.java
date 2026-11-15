@@ -20,30 +20,17 @@ public class BrowserstackDriver implements WebDriverProvider {
     public WebDriver createDriver(@NonNull Capabilities capabilities) {
         MutableCapabilities caps = new MutableCapabilities(); // todo move to UiAutomator2Options
 
-        // Set your access credentials
         caps.setCapability("browserstack.user", config.getUser());
         caps.setCapability("browserstack.key", config.getKey());
+        caps.setCapability("app", config.getApp());
+        caps.setCapability("device", config.getDevice());
+        caps.setCapability("os_version", config.getOsVersion());
+        caps.setCapability("project", config.getProject());
+        caps.setCapability("build", config.getBuild());
+        caps.setCapability("name", config.getName());
 
-        // Set URL of the application under test
-        caps.setCapability("app", "bs://deffbcd7188c51b72a9f03c71bff2eae22627cfc");
-
-//        !!!старость!!!
-//        caps.setCapability("app", "bs://bb4ab39663b0ff10c4c5d9bc609bc3742c56f4b3");
-
-        // Specify device and os_version for testing
-        caps.setCapability("device", "Google Pixel 6");
-        caps.setCapability("os_version", "12.0");
-
-        // Set other BrowserStack capabilities
-        caps.setCapability("project", "First Java Project");
-        caps.setCapability("build", "browserstack-build-1");
-        caps.setCapability("name", "first_test");
-
-        // Initialise the remote Webdriver using BrowserStack remote URL
-        // and desired capabilities defined above
         try {
-            return new RemoteWebDriver(
-                    new URL("https://hub.browserstack.com/wd/hub"), caps);
+            return new RemoteWebDriver(new URL(config.getHubUrl()), caps);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
