@@ -21,16 +21,17 @@ public class BrowserstackDriver implements WebDriverProvider {
     private final BrowserstackConfig config = ConfigFactory.create(BrowserstackConfig.class, System.getProperties());
 
     @Override
-    public WebDriver createDriver(@NonNull Capabilities capabilities) {
+    public @NonNull WebDriver createDriver(@NonNull Capabilities capabilities) {
         UiAutomator2Options options = new UiAutomator2Options();
         options.setPlatformName(ANDROID);
-        options.setDeviceName(config.getDevice());
-        options.setPlatformVersion(config.getOsVersion());
         options.setApp(config.getApp());
 
         Map<String, Object> bstackOptions = new HashMap<>();
         bstackOptions.put("userName", config.getUser());
         bstackOptions.put("accessKey", config.getKey());
+        bstackOptions.put("deviceName", config.getDevice());
+        bstackOptions.put("osVersion", config.getOsVersion());
+        bstackOptions.put("appiumVersion", config.getAppiumVersion());
         bstackOptions.put("projectName", config.getProject());
         bstackOptions.put("buildName", config.getBuild());
         bstackOptions.put("sessionName", config.getName());

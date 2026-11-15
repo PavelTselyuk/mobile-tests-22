@@ -13,7 +13,7 @@ public class Browserstack {
 
     public static String videoUrl(String sessionId) {
         BrowserstackConfig config = ConfigFactory.create(BrowserstackConfig.class, System.getProperties());
-        String url = String.format(config.getUrl(), sessionId);
+        String url = config.getUrl() + sessionId + ".json";
 
         return given()
                 .auth().basic(config.getUser(), config.getKey())

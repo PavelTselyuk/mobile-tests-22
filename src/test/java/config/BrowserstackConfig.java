@@ -31,6 +31,9 @@ public interface BrowserstackConfig extends Config {
     @Key("browserstack.osVersion")
     String getOsVersion();
 
+    @Key("browserstack.appiumVersion")
+    String getAppiumVersion();
+
     @Key("browserstack.project")
     String getProject();
 

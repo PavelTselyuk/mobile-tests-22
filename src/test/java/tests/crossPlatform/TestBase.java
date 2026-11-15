@@ -1,7 +1,6 @@
 package tests.crossPlatform;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.appium.SelenideAppium;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.DeviceHostConfig;
@@ -9,6 +8,7 @@ import drivers.BrowserstackDriver;
 import drivers.LocalDriver;
 import drivers.RealDriver;
 import helpers.Attach;
+import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class TestBase {
 
@@ -26,14 +27,11 @@ public class TestBase {
     @BeforeAll
     static void beforeAll() {
         String host = config.deviceHost();
-        if ("browserstack".equals(host)) {
-            Configuration.browser = BrowserstackDriver.class.getName();
-        } else if ("emulation".equals(host)) {
-            Configuration.browser = LocalDriver.class.getName();
-        } else if ("real".equals(host)) {
-            Configuration.browser = RealDriver.class.getName();
-        } else {
-            throw new IllegalArgumentException(
+        switch (host) {
+            case "browserstack" -> Configuration.browser = BrowserstackDriver.class.getName();
+            case "emulation" -> Configuration.browser = LocalDriver.class.getName();
+            case "real" -> Configuration.browser = RealDriver.class.getName();
+            case null, default -> throw new IllegalArgumentException(
                     "Unknown deviceHost: " + host
                             + ". Expected: browserstack | emulation | real");
         }
@@ -59,7 +57,7 @@ public class TestBase {
             Attach.pageSource();
             closeWebDriver();
         } else {
-            String sessionId = Selenide.sessionId().toString();
+            String sessionId = ((AndroidDriver) getWebDriver()).getSessionId().toString();
             Attach.pageSource();
             closeWebDriver();
             Attach.addVideo(sessionId);
